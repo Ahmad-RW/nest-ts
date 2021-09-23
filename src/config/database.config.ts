@@ -1,5 +1,10 @@
 import { TypeOrmModuleOptions } from "@nestjs/typeorm"
 import { join } from "path"
+import { DefaultNamingStrategy, NamingStrategyInterface } from "typeorm"
+import { snakeCase } from 'typeorm/util/StringUtils';
+
+
+
 
 export default () : TypeOrmModuleOptions => (process.env.NODE_ENV === 'test' ? 
 {
@@ -8,6 +13,7 @@ export default () : TypeOrmModuleOptions => (process.env.NODE_ENV === 'test' ?
     logging : false,
     synchronize: true,
     entities: [join(__dirname, '../', '/**/*.entity{.ts,.js}')],
+    namingStrategy : new SnakeNamingStrategy()
 } 
 : 
 {
@@ -21,7 +27,8 @@ export default () : TypeOrmModuleOptions => (process.env.NODE_ENV === 'test' ?
     logging: process.env.ORM_LOGGING === "true",
     // We are using migrations, synchronize should be set to false.
     synchronize: false,
-
+    migrationsTableName : "migrations",
+    namingStrategy : new SnakeNamingStrategy(),
     // Run migrations automatically,
     // you can disable this if you prefer running migration manually.
     migrationsRun: false,
@@ -35,4 +42,65 @@ export default () : TypeOrmModuleOptions => (process.env.NODE_ENV === 'test' ?
         migrationsDir: 'src/database/migrations',
     },
 }
-) 
+)
+
+ class SnakeNamingStrategy extends DefaultNamingStrategy implements NamingStrategyInterface {
+  tableName(className: string, customName: string): string {
+    return customName ? customName : snakeCase(className);
+  }
+
+  columnName(
+    propertyName: string,
+    customName: string,
+    embeddedPrefixes: string[],
+  ): string {
+    return (
+      snakeCase(embeddedPrefixes.concat('').join('_')) +
+      (customName ? customName : snakeCase(propertyName))
+    );
+  }
+
+  relationName(propertyName: string): string {
+    return snakeCase(propertyName);
+  }
+
+  joinColumnName(relationName: string, referencedColumnName: string): string {
+    return snakeCase(relationName + '_' + referencedColumnName);
+  }
+
+  joinTableName(
+    firstTableName: string,
+    secondTableName: string,
+    firstPropertyName: string,
+    secondPropertyName: string,
+  ): string {
+    return snakeCase(
+      firstTableName +
+        '_' +
+        firstPropertyName.replace(/\./gi, '_') +
+        '_' +
+        secondTableName,
+    );
+  }
+
+  joinTableColumnName(
+    tableName: string,
+    propertyName: string,
+    columnName?: string,
+  ): string {
+    return snakeCase(
+      tableName + '_' + (columnName ? columnName : propertyName),
+    );
+  }
+
+  classTableInheritanceParentColumnName(
+    parentTableName: any,
+    parentTableIdPropertyName: any,
+  ): string {
+    return snakeCase(parentTableName + '_' + parentTableIdPropertyName);
+  }
+
+  eagerJoinRelationAlias(alias: string, propertyPath: string): string {
+    return alias + '__' + propertyPath.replace('.', '_');
+  }
+}
