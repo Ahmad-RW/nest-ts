@@ -1,6 +1,6 @@
 import { Exclude } from "class-transformer";
 import { BaseEntity, Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from "typeorm";
-
+import * as bcrypt from 'bcrypt'
 @Entity({name : 'users'})
 export class User extends BaseEntity {
     @PrimaryGeneratedColumn()
@@ -26,5 +26,10 @@ export class User extends BaseEntity {
 
     @VersionColumn()
     version: number
+
+    
+    async verifyPassword(password: string) {
+        return await bcrypt.compare(password, this.password);
+   }
 
 }
