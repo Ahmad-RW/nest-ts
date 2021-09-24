@@ -35,4 +35,13 @@ export class UsersController {
         return new UserResource(user);
 
     }
+
+    @Get('/deleteMe')
+    @UseGuards(AuthGuard)
+    delete(@Request() req):string{
+        const user : User = req.user
+        user.softRemove()
+
+        return 'ok'
+    }
 }
