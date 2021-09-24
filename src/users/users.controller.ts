@@ -1,5 +1,7 @@
 import { Controller, Get, Post, UseGuards, ValidationPipe, Request, UsePipes, Body } from '@nestjs/common';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entities/user.entity';
 import { UserResource } from './resources/user.resource';
 import { UserCollection } from './resources/userCollection.resource';
 import { UsersService } from './users.service';
@@ -26,11 +28,11 @@ export class UsersController {
         return new UserCollection(users)
     }
 
-    // @UseGuards(AuthGuard)
-    // @Get()
-    // getUserInfo(@Request() req) : UserResource{
-    //     const user : User = req.user;
-    //     return new UserResource(user);
+    @UseGuards(AuthGuard)
+    @Get('/me')
+    getUserInfo(@Request() req) : UserResource{
+        const user : User = req.user;
+        return new UserResource(user);
 
-    // }
+    }
 }
