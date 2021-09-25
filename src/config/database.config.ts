@@ -14,10 +14,13 @@ export default () : TypeOrmModuleOptions => (process.env.NODE_ENV === 'test' ?
     logging : false,
     dropSchema : true,
     migrationsRun: true,
+    synchronize : false,
     migrations: [join(__dirname, '../', '/database/migrations/**/*{.ts,.js}')],
     migrationsTableName : "migrations",
     entities: [join(__dirname, '../', '/**/*.entity{.ts,.js}')],
     namingStrategy : new SnakeNamingStrategy(),
+    keepConnectionAlive : true,
+    
     // type : 'sqlite',
     // database : ':memory:',
     // logging : false,
