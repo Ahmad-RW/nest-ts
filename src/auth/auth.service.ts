@@ -8,7 +8,7 @@ import { AccessToken } from './resources/accessToken.resource';
 export class AuthService {
     constructor(private readonly userService: UsersService, private readonly jwtService: JwtService) { }
 
-    async validateUser(email : string, password : string): Promise<User> {
+    async validateUser(email: string, password: string): Promise<User> {
         const user = await this.userService.getUserByEmail(email)
         if (user && (await user.verifyPassword(password))) {
             return user
@@ -21,11 +21,25 @@ export class AuthService {
         const user = await this.validateUser(email, password)
         if (user) {
             //generating token payload
-            const jwt = this.jwtService.sign({email : user.email, id : user.id})
+            const jwt = this.jwtService.sign({ email: user.email, id: user.id })
             const accessToken = new AccessToken(jwt)
             return accessToken
         }
         throw new UnauthorizedException()
+    }
+
+
+    async can(user: User, permission: string[]) {
+        let found = false
+        user.role.permissions.concat(user.permissions).forEach((permissionObject, i) => {
+            if (permission.includes(permissionObject.name)) found = true
+
+        })
+        return found
+    }
+
+    async cant(user: User, permission: string[]) {
+        return !this.can(user, permission)
     }
 
 }

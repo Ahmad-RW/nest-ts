@@ -24,7 +24,8 @@
     "typeorm:revert": "npm run typeorm migration:revert",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
-    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed --configName ./src/database/connectionExport.ts"
+    "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed --configName ./src/database/connectionExport.ts ",
+    "seed:run:class": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed --configName ./src/database/connectionExport.ts --s"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",

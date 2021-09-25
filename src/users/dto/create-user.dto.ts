@@ -1,4 +1,6 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { IsEmail, IsEnum, IsIn, IsNotEmpty, IsString } from "class-validator";
+import { Role } from "../../auth/entities/role.entity";
+import { RoleId } from "../../auth/enums/role.enum";
 //DTO means Data Transer Object 
 
 export class CreateUserDto{
@@ -8,5 +10,10 @@ export class CreateUserDto{
 
     @IsString()
     password : string
+
+   
+    @IsEnum(RoleId)
+    @IsNotEmpty()
+    type : string
 
 }

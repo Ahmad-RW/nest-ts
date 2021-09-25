@@ -7,6 +7,7 @@ import { Permission } from "./permission.entity";
 
 @Entity({name : "roles"})
 export class Role extends BaseEntity{
+    
     @PrimaryColumn()
     id : RoleId
 
