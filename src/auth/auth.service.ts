@@ -30,7 +30,12 @@ export class AuthService {
 
 
     async can(user: User, permission: string[]) {
+        console.log(user);
+        
         let found = false
+        if(!user.role || !user.role.permissions){
+            return false;
+        }
         user.role.permissions.concat(user.permissions).forEach((permissionObject, i) => {
             if (permission.includes(permissionObject.name)) found = true
 
