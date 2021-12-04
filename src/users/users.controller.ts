@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { WithPermissions } from '../auth/decorators/withPermissions.decorator';
 import { WithRoles } from '../auth/decorators/withRoles.decorator';
-import { Permissions } from '../auth/enums/permission.enum';
+import { Permissions } from 'src/auth/enums/permission.enum';
 import { RoleId } from '../auth/enums/role.enum';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { PermissionGuard } from '../auth/guards/permission.guard';
