@@ -1,22 +1,28 @@
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  PrimaryColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  CreateDateColumn,
+} from 'typeorm';
+import { Permissions } from '../enums/permission.enum';
 
-import { BaseEntity, Column, Entity, JoinTable, ManyToMany, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn, DeleteDateColumn, CreateDateColumn } from "typeorm";
-import { Permissions } from "../enums/permission.enum";
+@Entity({ name: 'permissions' })
+export class Permission extends BaseEntity {
+  @PrimaryColumn()
+  id: number;
 
+  @Column()
+  name: Permissions;
 
-@Entity({name : "permissions"})
-export class Permission extends BaseEntity{
-    @PrimaryColumn()
-    id : number
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @Column()
-    name : Permissions
+  @DeleteDateColumn()
+  deletedAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date
-
-    @DeleteDateColumn()
-    deletedAt: Date
-
-    @CreateDateColumn()
-    createdAt: Date
+  @CreateDateColumn()
+  createdAt: Date;
 }
