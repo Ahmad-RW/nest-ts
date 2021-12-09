@@ -1,0 +1,57 @@
+version: '3.8'
+services:
+ ctb-api:
+  user: root
+  build: 
+    context: ../
+    dockerfile: docker/Dockerfile
+  restart: always
+  ports:
+   - 3001:3000
+  environment:
+    - DB_HOST=ctb-db
+    - DB_PORT=5432
+    - DB_USERNAME=postgres
+    - DB_PASSWORD=postgres
+    - DB_NAME=ctb_api
+    - TEST_DB_HOST=ctb-test-db
+    - TEST_DB_PORT=5432
+    - TEST_DB_USERNAME=postgres
+    - TEST_DB_PASSWORD=postgres
+    - TEST_DB_NAME=ctb_api_test
+    - ORM_LOGGING=false
+    - JWT_SECRET=SECRET
+    - NODE_ENV=dev
+  volumes:
+    - ../src:/home/node/src/
+    - ../tsconfig.json:/home/node/tsconfig.json
+    - ../tsconfig.build.json:/home/node/tsconfig.build.json
+  command: npm run start:dev
+  depends_on:
+    - ctb-db
+    - ctb-test-db
+ ctb-db:
+  image: postgres:14
+  restart: always
+  ports:
+    - 15432:5432
+  environment:
+    - POSTGRES_PASSWORD=postgres
+    - POSTGRES_USER=postgres
+    - POSTGRES_DB=ctb_api
+  volumes:
+    - ctb-db-data:/var/lib/postgres/data
+ ctb-test-db:
+    image: postgres:14
+    ports:
+      - 25432:5432
+    restart: always
+    environment:
+     - POSTGRES_PASSWORD=postgres
+     - POSTGRES_USER=postgres
+     - POSTGRES_DB=ctb_api_test
+    volumes:
+      - ctb-test-db-data:/var/lib/postgres/data
+volumes:
+  ctb-db-data:
+  ctb-test-db-data:
