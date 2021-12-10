@@ -1,14 +1,28 @@
 
 #-- Multi Stage building
 #-- Build and install deps stage
-FROM node:14
+FROM node:14 as development
 
-ENV NODE_ENV development 
+ENV NODE_ENV=development 
 
 USER node
 WORKDIR /home/node
 
-COPY package*.json ./ 
+COPY --chown=node:node package*.json ./ 
 RUN npm i
-COPY . .
+COPY --chown=node:node . .
 RUN npm run build
+CMD ["npm", "run", "start:dev"]
+#============#
+# Production #
+#============#
+FROM node:14 as production
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+USER node
+WORKDIR /home/node
+COPY --chown=node:node --from=development /home/node .
+RUN npm prune --production
+EXPOSE 3040
+CMD ["npm", "run", "start:prod"]
