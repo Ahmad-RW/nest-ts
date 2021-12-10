@@ -2,9 +2,9 @@ version: '3.8'
 services:
  ctb-api:
   user: root
-  build: 
+  build:
     context: ../
-    dockerfile: docker/Dockerfile
+    dockerfile : docker/Dockerfile 
   restart: always
   ports:
    - 3001:3000
@@ -23,9 +23,7 @@ services:
     - JWT_SECRET=SECRET
     - NODE_ENV=dev
   volumes:
-    - ../src:/home/node/src/
-    - ../tsconfig.json:/home/node/tsconfig.json
-    - ../tsconfig.build.json:/home/node/tsconfig.build.json
+    - ../src:/home/node/src
   command: npm run start:dev
   depends_on:
     - ctb-db
