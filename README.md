@@ -17,7 +17,7 @@
 ## Running the app
 1. While in root directory, run `docker-compose -f docker/docker-compose.yml up` to run the whole stack.
 2. First run will take a while to pull the test and dev DBs and build the image.
-3. When everything is up and running run `curl 127.0.0.1:3001/api` to verify that the server is up and running.
+3. When everything is up and running run `curl 127.0.0.1:3001/api` in terminal to verify that the server is up and running.
 
 ## Running tests
 1. To run tests you may run `npm run test` in root directory which will pass the test commmand to the docker container to run the tests.
