@@ -9,27 +9,16 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repo with config and db modules
 
-## Installation
-
-```bash
-$ npm install
-```
+## Installations
+1. Install [Docker](https://www.docker.com/get-started)
+2. Verify that Docker and Docker Compose is instralled by running `docker version` and `docker-compose version`
+3. Further more, verify that docker daemon is running by running `docker run hello-world` you should see a hello world print from the pulled docker container.(use sudo if required)
 
 ## Running the app
+1. While in root directory, run `docker-compose -f docker/docker-compose.yml up` to run the whole stack.
+2. First run will take a while to pull the test and dev DBs and build the image.
+3. When everything is up and running run `curl 127.0.0.1:3001/api` to verify that the server is up and running.
 
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
-
-```bash
-$ npm run test
-```
+## Running tests
+1. To run tests you may run `npm run test` in root directory which will pass the test commmand to the docker container to run the tests.
+2. To run tests directly on your host machine(not recommended) you may run `npm run test:host` in root directory
