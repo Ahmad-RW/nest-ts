@@ -1,6 +1,9 @@
 
 #-- Multi Stage building
 #-- Build and install deps stage
+#=============#
+# Development #
+#=============#
 FROM node:14 as development
 
 ENV NODE_ENV=development 
