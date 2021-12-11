@@ -1,5 +1,5 @@
 import { User } from '../entities/user.entity';
-import { UserResource } from './User.resource';
+import { UserResource } from './user.resource';
 export class UserCollection {
   users: UserResource[];
   constructor(user: User[]) {
