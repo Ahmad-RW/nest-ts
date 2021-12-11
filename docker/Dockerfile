@@ -6,8 +6,6 @@
 #=============#
 FROM node:14 as development
 
-ENV NODE_ENV=development 
-
 USER node
 WORKDIR /home/node
 

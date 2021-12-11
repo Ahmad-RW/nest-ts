@@ -21,7 +21,8 @@
     "migrate:generate": "npm run typeorm migration:generate -- -n",
     "migrate:run": "npm run typeorm migration:run",
     "migrate:revert": "npm run typeorm migration:revert",
-    "test": "jest --config ./test/jest-e2e.json --runInBand",
+    "test:host": "jest --config ./test/jest-e2e.json --runInBand",
+    "test" : "sudo docker exec -i ctb_api npm run test:host",
     "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
     "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed --configName ./src/database/connectionExport.ts ",
     "seed:run:class": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed --configName ./src/database/connectionExport.ts --s"

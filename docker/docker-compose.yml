@@ -2,6 +2,7 @@ version: '3.8'
 services:
  ctb-api:
   user: root
+  container_name: ctb_api
   build:
     context: ../
     dockerfile : docker/Dockerfile 
@@ -22,9 +23,9 @@ services:
     - TEST_DB_NAME=ctb_api_test
     - ORM_LOGGING=false
     - JWT_SECRET=SECRET
-    - NODE_ENV=dev
   volumes:
     - ../src:/home/node/src
+    - ../test:/home/node/test
   command: npm run start:dev 
   depends_on:
     - ctb-db
