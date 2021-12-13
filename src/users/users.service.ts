@@ -18,8 +18,6 @@ export class UsersService {
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {
-    console.log(await Role.findOne(RoleId[createUserDto.type]));
-
     const user = new User();
     user.email = createUserDto.email;
     user.salt = await bcrypt.genSalt(10);

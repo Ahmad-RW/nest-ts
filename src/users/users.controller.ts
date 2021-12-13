@@ -7,6 +7,8 @@ import {
   Request,
   UsePipes,
   Body,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { WithPermissions } from '../auth/decorators/withPermissions.decorator';
 import { WithRoles } from '../auth/decorators/withRoles.decorator';
@@ -17,11 +19,10 @@ import { PermissionGuard } from '../auth/guards/permission.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
-import { UserResource } from './resources/user.resource';
-import { UserCollection } from './resources/userCollection.resource';
 import { UsersService } from './users.service';
 
 @Controller('users')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
   constructor(private userService: UsersService) {}
 
@@ -31,30 +32,24 @@ export class UsersController {
   @UsePipes(ValidationPipe)
   async createUser(
     @Body() createUserDto: CreateUserDto,
-  ): Promise<UserResource> {
+  ): Promise<User> {
     const user = await this.userService.createUser(createUserDto);
-    console.log(user);
-
-    return new UserResource(user);
+    return user
   }
 
   @Get()
   @WithRoles(RoleId.admin)
   @UseGuards(AuthGuard, RolesGuard)
-  async getAllUsers(@Request() req): Promise<UserCollection> {
+  async getAllUsers(@Request() req): Promise<User[]> {
     const users = await this.userService.getAll();
-    console.log(req.user);
-
-    return new UserCollection(users);
+    return users
   }
 
   @WithPermissions(Permissions.viewOwnProfile)
   @UseGuards(AuthGuard, PermissionGuard)
   @Get('/me')
-  getUserInfo(@Request() req): UserResource {
+  getUserInfo(@Request() req): User {
     const user: User = req.user;
-    console.log(user);
-
-    return new UserResource(user);
+    return user
   }
 }
