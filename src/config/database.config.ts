@@ -55,7 +55,7 @@ export default (): TypeOrmModuleOptions =>
         cli: {
           // Location of migration should be inside src folder
           // to be compiled into dist/ folder.
-          migrationsDir: join(__dirname, '../', '/database/migrations/**/*{.ts,.js}'),
+	 migrationsDir: join(__dirname, '../', '/database/migrations/'),
         },
       };
 
