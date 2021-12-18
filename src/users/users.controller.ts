@@ -18,7 +18,7 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { PermissionGuard } from '../auth/guards/permission.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './entities/user.entity';
+import { User } from '@prisma/client'
 import { UsersService } from './users.service';
 
 @Controller('users')

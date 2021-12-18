@@ -22,10 +22,16 @@
     "migrate:run": "npm run typeorm migration:run",
     "migrate:revert": "npm run typeorm migration:revert",
     "test:host": "jest --config ./test/jest-e2e.json --runInBand",
-    "test" : "sudo docker exec -i ctb_api npm run test:host",
+    "test": "sudo docker exec -i ctb_api npm run test:host",
     "seed:config": "ts-node ./node_modules/typeorm-seeding/dist/cli.js config",
     "seed:run": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed --configName ./src/database/connectionExport.ts ",
-    "seed:run:class": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed --configName ./src/database/connectionExport.ts --s"
+    "seed:run:class": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed --configName ./src/database/connectionExport.ts --s",
+    "migrate:dev": "npx prisma migrate dev",
+    "migrate:dev:create": "npx prisma migrate dev --create-only",
+    "migrate:deploy": "npx prisma migrate deploy",
+    "prisma:generate": "npx prisma generate",
+    "prisma:studio": "npx prisma studio",
+    "prisma:seed": "npx prisma db seed --preview-feature"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -36,10 +42,12 @@
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/typeorm": "^8.0.2",
+    "@prisma/client": "latest",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
     "faker": "^5.5.3",
+    "nestjs-prisma": "^0.14.3",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.1",
@@ -66,11 +74,15 @@
     "eslint-plugin-prettier": "^3.4.0",
     "jest": "27.0.6",
     "prettier": "^2.3.2",
+    "prisma": "latest",
     "supertest": "^6.1.3",
     "ts-jest": "^27.0.3",
     "ts-loader": "^9.2.3",
     "ts-node": "^10.0.0",
     "tsconfig-paths": "^3.10.1",
     "typescript": "^4.3.5"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   }
 }
