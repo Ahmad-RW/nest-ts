@@ -36,7 +36,7 @@ export class AuthService {
     if (!user.role || !user.role.permissions) {
       return false;
     }
-    user.role.permissions
+    user.role.permissions.toArray()
       .concat(user.permissions)
       .forEach((permissionObject) => {
         if (permission.includes(permissionObject.name)) found = true;

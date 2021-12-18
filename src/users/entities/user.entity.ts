@@ -1,72 +1,44 @@
-import {
-  BaseEntity,
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-  VersionColumn,
-} from 'typeorm';
+
 import * as bcrypt from 'bcrypt';
 import { Role } from '../../auth/entities/role.entity';
 import { Permission } from '../../auth/entities/permission.entity';
 import { Exclude, Transform } from 'class-transformer';
-@Entity({ name: 'users' })
-export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
+import { Collection, Entity, ManyToMany, ManyToOne, PrimaryKey, Property } from '@mikro-orm/core';
+
+@Entity()
+export class User {
+  @PrimaryKey()
   id: number;
 
-  @Column()
+  @Property()
   email: string;
 
-  @Column()
+  @Property()
   @Exclude()
   password: string;
 
-  @Column()
+  @Property()
   @Exclude()
   salt: string;
 
-  @UpdateDateColumn()
-  @Exclude()
-  updatedAt: Date;
 
-  @DeleteDateColumn()
+  @Property({ onUpdate: () => new Date() })
+  @Exclude()
+  updatedAt = new Date();
+
+  @Property()
   @Exclude()
   deletedAt: Date;
 
-  @CreateDateColumn()
+  @Property()
   @Exclude()
-  createdAt: Date;
+  createdAt: Date = new Date()
 
-  @VersionColumn()
-  @Exclude()
-  version: number;
 
-  @ManyToMany(() => Permission, { eager: true })
-  @JoinTable({
-    joinColumn: {
-      name: 'user_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'permission_id',
-      referencedColumnName: 'id',
-    },
-    name: 'user_has_permission',
-  })
-  permissions: Permission[];
+  @ManyToMany({ entity: () => Permission, eager:true, joinColumn : 'user_id', inverseJoinColumn : 'permission_id', })
+  permissions = new Collection<Permission>(this)
 
-  @ManyToOne(() => Role, { eager: true })
-  @JoinColumn({
-    name: 'role_id',
-    referencedColumnName: 'id',
-  })
+  @ManyToOne({entity: ()=> Role, eager : true, joinColumn : 'role_id'})
   @Transform(({value})=>value.name)
   role: Role;
 

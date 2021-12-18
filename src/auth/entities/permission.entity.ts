@@ -1,28 +1,20 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
-  DeleteDateColumn,
-  CreateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { Permissions } from '../enums/permission.enum';
 
-@Entity({ name: 'permissions' })
-export class Permission extends BaseEntity {
-  @PrimaryColumn()
+@Entity()
+export class Permission  {
+  @PrimaryKey()
   id: number;
 
-  @Column()
+  @Property()
   name: Permissions;
 
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @Property({ onUpdate: () => new Date() })
+  updatedAt = new Date();
 
-  @DeleteDateColumn()
+  @Property()
   deletedAt: Date;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @Property()
+  createdAt: Date = new Date()
 }

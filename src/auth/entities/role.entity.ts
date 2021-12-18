@@ -1,33 +1,17 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  PrimaryColumn,
-} from 'typeorm';
+
+import { BaseEntity, Collection, Entity, EntityManagerType, ManyToMany, PrimaryKey, Property } from '@mikro-orm/core';
 import { RoleId } from '../enums/role.enum';
 import { Permission } from './permission.entity';
 
-@Entity({ name: 'roles' })
-export class Role extends BaseEntity {
-  @PrimaryColumn()
+@Entity()
+export class Role {
+
+  @PrimaryKey()
   id: RoleId;
 
-  @Column()
+  @Property()
   name: string;
 
-  @ManyToMany(() => Permission, { eager: true })
-  @JoinTable({
-    name: 'role_has_permission',
-    joinColumn: {
-      name: 'role_id',
-      referencedColumnName: 'id',
-    },
-    inverseJoinColumn: {
-      name: 'permission_id',
-      referencedColumnName: 'id',
-    },
-  })
-  permissions: Permission[];
+  @ManyToMany({entity : () => Permission, eager : true, joinColumn : 'role_id', inverseJoinColumn : 'permission_id'})
+  permissions = new Collection<Permission>(this);
 }

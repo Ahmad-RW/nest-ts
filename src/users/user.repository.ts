@@ -1,9 +1,9 @@
-import { EntityRepository, Repository } from 'typeorm';
+import { EntityRepository, Property, Repository } from '@mikro-orm/core';
 import { User } from './entities/user.entity';
 
-@EntityRepository(User)
-export class UserRepository extends Repository<User> {
+@Repository(User)
+export class UserRepository extends EntityRepository<User> {
   getUserByEmail(email: string): Promise<User> {
-    return this.findOne({ email: email });
+    return this.findOne({email})
   }
 }
